@@ -26,9 +26,9 @@ petal = PETALCS(0, fiducial_1, fiducial_2);
 
 gluing = PetalDispensing(dispenser,gantry,petal);
 
-cmd = sprintf('DI--');
-error = dispenser.SetUltimus(cmd)
-pause(0.1)
+% cmd = sprintf('DI--');
+% error = dispenser.SetUltimus(cmd)
+% pause(0.1)
 cmd = sprintf('AU---');
 Feedback = dispenser.GetUltimus(cmd)
 
