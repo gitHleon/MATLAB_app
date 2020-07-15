@@ -9,7 +9,7 @@ classdef PetalDispensing < handle
         dispenser;
         ready = 0;
         zWaitingHeigh = 10;            % Z Position prepared to dispense
-        zDispensingHeigh = -73.4;      % Z Position while glue dispensing
+        zDispensingHeigh = -72;      % Z Position while glue dispensing
     end
     
     properties (Access = public)
@@ -35,9 +35,9 @@ classdef PetalDispensing < handle
         OffGlueStartX = 5;   % Distance from the sensor edge
         OffGlueStartY = 5;
         OffGlueStart = [5,5]
-        glueOffX = 415;       %Offset Between camera and syrenge
-        glueOffY = -5;
-        glueOff = [415,-5]
+        glueOffX = 415.5;       %Offset Between camera and syrenge
+        glueOffY = 4;
+        glueOff = [415.5,4]
         
         zHighSpeed = 10;
         zLowSpeed = 5;
@@ -108,7 +108,7 @@ classdef PetalDispensing < handle
             cmd = sprintf('PS--%04d', value);    % Set dispenser pressure to 40 KPA = 0.4 BAR
             error = error + this.dispenser.SetUltimus(cmd);
             
-            value = 0.5;                  % 0.5 "H2O
+            value = 0.4;                  % 0.5 "H2O
             value = value * 10;
             cmd = sprintf('VS--%04d', value);    % Set dispenser vacuum to 0.12 KPA = 0.5 "H2O
             error = error + this.dispenser.SetUltimus(cmd);
@@ -160,7 +160,7 @@ classdef PetalDispensing < handle
             
             cmd = sprintf('DI--');
             error = this.dispenser.SetUltimus(cmd);
-            pause(0.2)
+            %pause(0.1)
         end
         
         function ReadDispenserStatus(this)
@@ -351,7 +351,11 @@ classdef PetalDispensing < handle
                 fprintf ('\n DISPENSER ERROR \n');
                 return
             end
+            timeStart = tic;
             this.gantry.MoveToLinear(StopGantry(1), StopGantry(2), this.dispSpeed);
+            this.gantry.WaitForMotionAll();
+            timeStop(1) = toc(timeStart);
+            fprintf('Line %d -> %.3f\n', 0, timeStop(1))
             
             for Line=1:nLines
                 % Calculate line in Sensor coordinates
@@ -379,15 +383,15 @@ classdef PetalDispensing < handle
                 timeStart = tic;
                 this.gantry.MoveToLinear(StopGantry(1), StopGantry(2), this.dispSpeed);
                 this.gantry.WaitForMotionAll()
-                timeStop(Line) = toc(timeStart);
-                fprintf('Line %d -> %.3f\n', Line, timeStop(Line))
+                timeStop(Line+1) = toc(timeStart);
+                fprintf('Line %d -> %.3f\n', Line, timeStop(Line+1))
             end
             this.gantry.WaitForMotionAll()
             error = error + this.StartDispensing();
             if error ~= 0
                 fprintf ('\n DISPENSER ERROR \n');
             end
-            save('R0_times.mat', 'timeStop')
+            save('R3S1_times.mat', 'timeStop')
             this.gantry.zSecurityPosition();
         end
         
@@ -414,48 +418,56 @@ classdef PetalDispensing < handle
                     this.f2 = this.petal1.fiducials_sensors.R1{3};
                     this.f3 = this.petal1.fiducials_sensors.R1{1};
                     this.f4 = this.petal1.fiducials_sensors.R1{2};
+                    load('R1.mat', 'timeStop');
                 case 'R2'
                     nLines = 15;
                     this.f1 = this.petal1.fiducials_sensors.R2{4};
                     this.f2 = this.petal1.fiducials_sensors.R2{3};
                     this.f3 = this.petal1.fiducials_sensors.R2{1};
                     this.f4 = this.petal1.fiducials_sensors.R2{2};
+                    load('R2.mat', 'timeStop');
                 case 'R3S0'
                     nLines = 32;
                     this.f1 = this.petal1.fiducials_sensors.R3S0{4};
                     this.f2 = this.petal1.fiducials_sensors.R3S0{3};
                     this.f3 = this.petal1.fiducials_sensors.R3S0{1};
                     this.f4 = this.petal1.fiducials_sensors.R3S0{2};
+                    load('R3S0.mat', 'timeStop');
                 case 'R3S1'
                     nLines = 32;
                     this.f1 = this.petal1.fiducials_sensors.R3S1{4};
                     this.f2 = this.petal1.fiducials_sensors.R3S1{3};
                     this.f3 = this.petal1.fiducials_sensors.R3S1{1};
                     this.f4 = this.petal1.fiducials_sensors.R3S1{2};
+                    load('R3S1.mat', 'timeStop');
                 case 'R4S0'
                     nLines = 30;
                     this.f1 = this.petal1.fiducials_sensors.R4S0{4};
                     this.f2 = this.petal1.fiducials_sensors.R4S0{3};
                     this.f3 = this.petal1.fiducials_sensors.R4S0{1};
                     this.f4 = this.petal1.fiducials_sensors.R4S0{2};
+                    load('R4S0.mat', 'timeStop');
                 case 'R4S1'
                     nLines = 30;
                     this.f1 = this.petal1.fiducials_sensors.R4S1{4};
                     this.f2 = this.petal1.fiducials_sensors.R4S1{3};
                     this.f3 = this.petal1.fiducials_sensors.R4S1{1};
                     this.f4 = this.petal1.fiducials_sensors.R4S1{2};
+                    load('R4S1.mat', 'timeStop');
                 case 'R5S0'
                     nLines = 27;
                     this.f1 = this.petal1.fiducials_sensors.R5S0{4};
                     this.f2 = this.petal1.fiducials_sensors.R5S0{3};
                     this.f3 = this.petal1.fiducials_sensors.R5S0{1};
                     this.f4 = this.petal1.fiducials_sensors.R5S0{2};
+                    load('R5S0.mat', 'timeStop');
                 case 'R5S1'
                     nLines = 27;
                     this.f1 = this.petal1.fiducials_sensors.R5S1{4};
                     this.f2 = this.petal1.fiducials_sensors.R5S1{3};
                     this.f3 = this.petal1.fiducials_sensors.R5S1{1};
                     this.f4 = this.petal1.fiducials_sensors.R5S1{2};
+                    load('R5S1.mat', 'timeStop');
                 otherwise
                     fprintf ('\n\t Error, "%s" is not a valid sensor name', Sensor);
             end
@@ -464,7 +476,7 @@ classdef PetalDispensing < handle
             error = 0;
             fprintf('%.3f ; ',timeStop);
             disp(' ');
-            time = uint16((timeStop*1000) - 380);     %Convert from seg to ms and estimate a delay of 380ms for Ultimus
+            time = uint16((timeStop*1000) - 480);  %380   %Convert from seg to ms and estimate a delay of 380ms for Ultimus
             fprintf('%d ; ',time);
             %Calculate Start and Stop gluing lines
             this.LinesCalculation();
@@ -507,15 +519,15 @@ classdef PetalDispensing < handle
                 %When last movement finished, continue with next line 
                 this.gantry.WaitForMotionAll()
                 toc
-                error = error + this.SetTime(time(Line));
+                error = error + this.SetTime(time(Line+1));
                 if error ~= 0
                     fprintf ('\n DISPENSER ERROR \n');
                     return
                 end
-                fprintf('Line %d (%d) -> ',Line, time(Line));
+                fprintf('Line %d (%d) -> ',Line, time(Line+1));
                 this.gantry.WaitForMotionAll()
                 this.gantry.MoveToLinear(StartGantry(1), StartGantry(2), this.dispSpeed);
-                pause(0.5)
+                pause(0.3)
                 error = error + this.StartDispensing();
                 if error ~= 0
                     fprintf ('\n DISPENSER ERROR \n');
@@ -529,6 +541,7 @@ classdef PetalDispensing < handle
 %                 fprintf ('\n DISPENSER ERROR \n');
 %             end
             this.gantry.zSecurityPosition();
+            this.gantry.MoveToFast(0,0);
             this.gantry.WaitForMotionAll();
         end
         
