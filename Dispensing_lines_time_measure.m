@@ -1,18 +1,18 @@
 for i=1:10
-gluing.DispenseContinius('R3S1')
+gluing.DispenseContinius('R5S1')
 variable = genvarname(sprintf('timeStop%d',i))
-load('R3S1_times.mat', 'timeStop')
+load('R5S1_times.mat', 'timeStop')
 eval([variable ' = timeStop'])
 end
 %Hacemos una matriz con todos los 10 vectores conseguidos
 times = [timeStop1;timeStop2;timeStop3;timeStop4;timeStop5;timeStop6;timeStop7;timeStop8;timeStop9;timeStop10];
-save('R3S1_times.mat', 'times')
+save('R5S1_times.mat', 'times')
 
 media = mean(times);
 timeStop = media;
-save('R3S1.mat', 'timeStop')
+save('R5S1.mat', 'timeStop')
 
-return
+%return
 
 gantry.MoveToFast(0,400)
 gantry.WaitForMotionAll();
