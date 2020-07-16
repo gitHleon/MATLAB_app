@@ -37,7 +37,8 @@ classdef PetalDispensing < handle
         OffGlueStart = [5,5]
         glueOffX = 415.5;       %Offset Between camera and syrenge
         glueOffY = 4;
-        glueOff = [415.5,4]
+        glueOff = [0,0]
+        %glueOff = [415.5,5]
         
         zHighSpeed = 10;
         zLowSpeed = 5;
@@ -322,6 +323,7 @@ classdef PetalDispensing < handle
                     this.f4 = this.petal1.fiducials_sensors.R5S1{2};
                 otherwise
                     fprintf ('\n\t Error, "%s" is not a valid sensor name', Sensor);
+                    disp('R0, R1, R2, R3S0, R3S1, R4S0, R4S1, R5S0, R5S1');
             end
             
             Line = 0;
@@ -391,7 +393,7 @@ classdef PetalDispensing < handle
             if error ~= 0
                 fprintf ('\n DISPENSER ERROR \n');
             end
-            save('R3S1_times.mat', 'timeStop')
+            save('R5S1_times.mat', 'timeStop')
             this.gantry.zSecurityPosition();
         end
         
@@ -621,6 +623,7 @@ classdef PetalDispensing < handle
                     fig = 51;
                 otherwise
                     fprintf ('\n\t Error, "%s" is not a valid sensor name', Sensor);
+                    disp('R0, R1, R2, R3S0, R3S1, R4S0, R4S1, R5S0, R5S1');
             end
             
             Line = 0;
