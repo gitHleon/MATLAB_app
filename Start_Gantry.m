@@ -18,7 +18,6 @@ fid=FIDUCIALS(1);
 
 dispenser = DISPENSER;
 
-
 fiducial_1 = [133.3216, -359.4739];
 fiducial_2 = [277.0741, 223.8666];
 
