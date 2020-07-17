@@ -37,8 +37,9 @@ classdef PetalDispensing < handle
         OffGlueStart = [5,5]
         glueOffX = 415.5;       %Offset Between camera and syrenge
         glueOffY = 4;
-        glueOff = [0,0]
-        %glueOff = [415.5,5]
+        %glueOff = [0,0]
+        glueOff = [415.5,4]
+        %glueOff = [4, 415.5]
         
         zHighSpeed = 10;
         zLowSpeed = 5;
@@ -68,19 +69,20 @@ classdef PetalDispensing < handle
             else
                 disp('Dispenser connecting FAIL');
             end
-            error = this.DispenserDefaults();
-            if error ~= 0
-                fprintf ('Error -> Could not set Dispenser');
-            end
+%             error = this.DispenserDefaults();
+%             if error ~= 0
+%                 fprintf ('Error -> Could not set Dispenser');
+%             end
             
+
             % Preparing gantry object
+            this.gantry = gantry_obj;
+            this.xAxis = this.gantry.X;
+            this.yAxis = this.gantry.Y;
+            this.z1Axis = this.gantry.Z1;
+            this.z2Axis = this.gantry.Z2;
             if gantry_obj.IsConnected == 1
-                this.gantry = gantry_obj;
                 disp('Gantry connected succesfully')
-                this.xAxis = this.gantry.X;
-                this.yAxis = this.gantry.Y;
-                this.z1Axis = this.gantry.Z1;
-                this.z2Axis = this.gantry.Z2;
             else
                 disp('Gantry connecting FAIL');
             end
@@ -240,21 +242,21 @@ classdef PetalDispensing < handle
             this.gantry.MoveTo(this.z2Axis,this.zWaitingHeigh, this.zLowSpeed,1);
         end
         
-        function GoFiducial_1(this)
-            % function GFiducial_1(this)
+        function GoFiducial_Lower(this)
+            % function GoFiducial_Lower(this)
             % Arguments: none
             % Return NONE
             % Move to defined Fiducial 1
             % Wait until all movements finished
-            this.gantry.MoveToFast(this.fiducial_1(1),this.fiducial_1(2),1);
+            this.gantry.MoveToFast(this.petal1.lower_petalFid(1),this.petal1.lower_petalFid(2),1);
         end
-        function GoFiducial_2(this)
-            % function GFiducial_1(this)
+        function GoFiducial_Upper(this)
+            % function GoFiducial_Upper(this)
             % Arguments: none
             % Return NONE
             % Move to defined Fiducial 2
             % Wait until all movements finished
-            this.gantry.MoveToFast(this.fiducial_2(1),this.fiducial_2(2),1);
+            this.gantry.MoveToFast(this.petal1.upper_petalFid(1),this.petal1.upper_petalFid(2),1);
         end
         
         %% Dispensing Patterns %%
@@ -322,8 +324,9 @@ classdef PetalDispensing < handle
                     this.f3 = this.petal1.fiducials_sensors.R5S1{1};
                     this.f4 = this.petal1.fiducials_sensors.R5S1{2};
                 otherwise
-                    fprintf ('\n\t Error, "%s" is not a valid sensor name', Sensor);
-                    disp('R0, R1, R2, R3S0, R3S1, R4S0, R4S1, R5S0, R5S1');
+                    fprintf ('\n\t Error, "%s" is not a valid sensor name: ', Sensor);
+                    disp('"R0", "R1", "R2", "R3S0", "R3S1", "R4S0", "R4S1", "R5S0", "R5S1"');
+                    return
             end
             
             Line = 0;
@@ -471,7 +474,9 @@ classdef PetalDispensing < handle
                     this.f4 = this.petal1.fiducials_sensors.R5S1{2};
                     load('R5S1.mat', 'timeStop');
                 otherwise
-                    fprintf ('\n\t Error, "%s" is not a valid sensor name', Sensor);
+                    fprintf ('\n\t Error, "%s" is not a valid sensor name: ', Sensor);
+                    disp('"R0", "R1", "R2", "R3S0", "R3S1", "R4S0", "R4S1", "R5S0", "R5S1"');
+                    return
             end
             
             Line = 0;
@@ -622,8 +627,9 @@ classdef PetalDispensing < handle
                     this.f4 = this.petal1.fiducials_sensors.R5S1{2};
                     fig = 51;
                 otherwise
-                    fprintf ('\n\t Error, "%s" is not a valid sensor name', Sensor);
-                    disp('R0, R1, R2, R3S0, R3S1, R4S0, R4S1, R5S0, R5S1');
+                    fprintf ('\n\t Error, "%s" is not a valid sensor name: ', Sensor);
+                    disp('"R0", "R1", "R2", "R3S0", "R3S1", "R4S0", "R4S1", "R5S0", "R5S1"');
+                    return
             end
             
             Line = 0;
