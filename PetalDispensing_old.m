@@ -38,7 +38,7 @@ classdef PetalDispensing < handle
         glueOffX = 415.5;       %Offset Between camera and syrenge
         glueOffY = 4;
         %glueOff = [0,0]
-        glueOff = [415.5,4]
+        glueOff = [415.5,4,0]
         %glueOff = [4, 415.5]
         
         zHighSpeed = 10;
