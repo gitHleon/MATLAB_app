@@ -38,8 +38,9 @@ classdef PetalDispensing < handle
         glueOffX = 415.5;       %Offset Between camera and syrenge
         glueOffY = 4;
         %glueOff = [0,0]
-        glueOff = [415.5,4]
-        %glueOff = [4, 415.5]
+%         glueOff = [415.5,4,0]
+%         glueOff = [4, 415.5,0]
+        glueOff = [415.5;4;0];
         
         zHighSpeed = 10;
         zLowSpeed = 5;
@@ -664,8 +665,9 @@ classdef PetalDispensing < handle
             this.PlotLine(StartSensor, StopSensor, fig)
             
             % Calculate first line in Gantry coordinates
-            StartGantry = this.petal1.sensor_to_gantry(StartSensor, Sensor);
-            StopGantry = this.petal1.sensor_to_gantry(StopSensor, Sensor);
+%             transpose(this.glueOff)
+            StartGantry = this.petal1.sensor_to_gantry(StartSensor, Sensor) - this.glueOff;
+            StopGantry = this.petal1.sensor_to_gantry(StopSensor, Sensor) - this.glueOff;
             this.PlotLine(StartGantry, StopGantry, 1)
             
             for Line=1:nLines
@@ -681,8 +683,8 @@ classdef PetalDispensing < handle
                 title(['Glue pattern in Sensor Coordinates of sensor: ' Sensor]);
                 
                 %Convert to Gantry coordinates
-                StartGantry = this.petal1.sensor_to_gantry(StartSensor, Sensor);
-                StopGantry = this.petal1.sensor_to_gantry(StopSensor, Sensor);
+                StartGantry = this.petal1.sensor_to_gantry(StartSensor, Sensor) - this.glueOff;
+                StopGantry = this.petal1.sensor_to_gantry(StopSensor, Sensor) - this.glueOff;
                 this.PlotLine(StartGantry, StopGantry, 1)
             end
         end
@@ -707,10 +709,14 @@ classdef PetalDispensing < handle
             % Arg: Line number
             % Return: [Start, Stop] for the current Line
             
-            Start(2) = this.f1(2,1) - this.Pitch * Line - this.OffGlueStart(2) + this.glueOff(2);
-            Start(1) = this.mLine12*Start(2) + this.qLine12 + this.OffGlueStart(1) + this.glueOff(1);
-            Stop(2) = this.f3(2,1) - this.Pitch * Line - this.OffGlueStart(2) + this.glueOff(2);
-            Stop(1) = this.mLine34*Stop(2) + this.qLine34 - this.OffGlueStart(1) + this.glueOff(1);
+%             Start(2) = this.f1(2,1) - this.Pitch * Line - this.OffGlueStart(2) + this.glueOff(2);
+%             Start(1) = this.mLine12*Start(2) + this.qLine12 + this.OffGlueStart(1) + this.glueOff(1);
+%             Stop(2) = this.f3(2,1) - this.Pitch * Line - this.OffGlueStart(2) + this.glueOff(2);
+%             Stop(1) = this.mLine34*Stop(2) + this.qLine34 - this.OffGlueStart(1) + this.glueOff(1);
+            Start(2) = this.f1(2,1) - this.Pitch * Line - this.OffGlueStart(2);
+            Start(1) = this.mLine12*Start(2) + this.qLine12 + this.OffGlueStart(1);
+            Stop(2) = this.f3(2,1) - this.Pitch * Line - this.OffGlueStart(2);
+            Stop(1) = this.mLine34*Stop(2) + this.qLine34 - this.OffGlueStart(1);
         end
         
         function PlotLine(this,Start,Stop, fig)
