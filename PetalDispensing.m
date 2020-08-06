@@ -490,8 +490,8 @@ classdef PetalDispensing < handle
             [StartSensor, StopSensor] = this.CalculateStartAndStop(Line);
             
             % Calculate first line in Gantry coordinates
-            StartGantry = this.petal1.sensor_to_gantry(StartSensor, Sensor);
-            StopGantry = this.petal1.sensor_to_gantry(StopSensor, Sensor);
+            StartGantry = this.petal1.sensor_to_gantry(StartSensor, Sensor) - this.glueOff;
+            StopGantry = this.petal1.sensor_to_gantry(StopSensor, Sensor) - this.glueOff;
             
             % Move to Start Position and start dispensing
             this.gantry.MoveToFast(StartGantry(1), StartGantry(2), 1);
@@ -519,8 +519,8 @@ classdef PetalDispensing < handle
                 end
                 
                 %Convert to Gantry coordinates
-                StartGantry = this.petal1.sensor_to_gantry(StartSensor, Sensor);
-                StopGantry = this.petal1.sensor_to_gantry(StopSensor, Sensor);
+                StartGantry = this.petal1.sensor_to_gantry(StartSensor, Sensor) - this.glueOff;
+                StopGantry = this.petal1.sensor_to_gantry(StopSensor, Sensor) - this.glueOff;
                 %When last movement finished, continue with next line 
                 this.gantry.WaitForMotionAll()
                 toc
