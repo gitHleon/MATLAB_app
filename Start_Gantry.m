@@ -2,6 +2,7 @@
 % Script prepared to begin main gantry setup functions
 gantry = STAGES(2);
 gantry.Connect;
+gantry.MotorEnableAll;
 
 % joy = JOYSTICK (gantry);
 % joy = joy.Connect;
