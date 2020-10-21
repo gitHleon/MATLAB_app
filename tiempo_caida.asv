@@ -1,0 +1,24 @@
+pos1(1) = gantry.GetPosition(gantry.Z1);
+pos2(1) = gantry.GetPosition(gantry.Z2);
+
+i = 1;
+Z1 = 0;
+Z2 = 0;
+
+tic
+while(Z1 > -10)
+    
+    Z1 = gantry.GetPosition(gantry.Z1);
+    Z2 = gantry.GetPosition(gantry.Z2);
+    if (pos1(i-1)> Z1)
+        i = i + 1;
+        pos1(i) = Z1
+        pos2(i) = Z2
+    end
+    pause(1);   
+end
+
+tiempo = toc
+
+save('tiempo_caida.mat','pos1','pos2','tiempo')
+% clear("pos1","pos2","i","tiempo")
