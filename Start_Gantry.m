@@ -4,8 +4,8 @@ gantry = STAGES(2);
 gantry.Connect;
 gantry.MotorEnableAll;
 
-% joy = JOYSTICK (gantry);
-% joy = joy.Connect;
+joy = JOYSTICK (gantry);
+joy = joy.Connect;
 
 % gantry.MotorEnableAll
 
