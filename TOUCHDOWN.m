@@ -74,7 +74,8 @@ classdef TOUCHDOWN < handle
             this.thresholdSlope=0.12;
             this.thresholdSlopeGradient=0.0;
 %             this.thresholdCurrent=1;
-            this.thresholdCurrent=1.8;
+%             this.thresholdCurrent=1.8;  % Sin muelle.
+            this.thresholdCurrent=2.5;
             
             % initialize vectors
             this.currentVector=0;

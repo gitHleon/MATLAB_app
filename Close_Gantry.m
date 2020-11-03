@@ -15,7 +15,7 @@ imaqreset
 % gantry.MoveTo(gantry.Z2,-65,10)
 return
 
-gantry.MoveToFast(-45,350)
+gantry.MoveToFast(-45,450)
 gantry.WaitForMotionAll();
 gantry.MoveTo(gantry.Z1,-16,5)
 gantry.MoveTo(gantry.Z2,-100,5)

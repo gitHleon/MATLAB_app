@@ -11,11 +11,11 @@ joy = joy.Connect;
 
 fid=FIDUCIALS(1);
 
-% cam= CAMERA(5);
-% cam = cam.Connect;
-% cam.DispCam
-% 
-% focus = FOCUS(gantry, cam,1);
+cam= CAMERA(5);
+cam = cam.Connect;
+cam.DispCam
+
+focus = FOCUS(gantry, cam,1);
 
 dispenser = DISPENSER;
 
