@@ -2,7 +2,6 @@
 gantry.HomeAll
 
 load('Sento_variables.mat')
-save('calibration_variables.mat', imagen
 
 imaqreset
 cam= CAMERA(5);
@@ -76,4 +75,29 @@ take.runTouchdown(gantry.Z1,ModulePosition(gantry.Z1));
 gantry.MoveTo(gantry.Z1,PickupPosition(gantry.Z1)+3,5)
 
 
+
+%%
+load('Calibration.mat');
+imshow(cal_imagenes{1})
+[x,y]= getpts
+corner{1}=[x,y]
+imshow(cal_imagenes{5})
+[x,y]= getpts
+corner{5}=[x,y]
+
+
+function [X,Y] = pixel2micra([PX,PY])
+X = PX/calibration;
+Y = PY/calibration;
+end
+
+function [X,Y] = pixel2micra([MX,MY])
+X = MX*calibration;
+Y = MY*calibration;
+end
+
+function [X, Y, Z1] = TakeFiducial()
+[X,Y] = getpts
+Z1 = gantry.GetPosistion(gantry.Z1);
+end
 

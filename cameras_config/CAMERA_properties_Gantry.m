@@ -14,3 +14,4 @@ videoAdaptor='gentl';    % Matlab video adaptor used
 triggerConfig='hardware';
 ExposureAuto='Continuous';
 GainAuto='Continuous';
+CalCam_Gantry = 1.7319;
