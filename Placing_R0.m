@@ -22,7 +22,7 @@ axis on
 hold on
 plot(center(1),center(2), 'r+', 'MarkerSize', 30);% 'LineWidth', 2);
 [corner(1),corner(2)] = getpts
-plot(corner(1), corner(2), 'g+', 'MarkerSize', 30, 'LineWidth', 2);
+plot(corner(1), corner(2), 'g+', 'MarkerSize', 30)%, 'LineWidth', 2);
 
 plot([corner(1) center(1)],[corner(2) center(2)], 'r', 'LineWidth', 2);
 

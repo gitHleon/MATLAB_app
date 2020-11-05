@@ -37,7 +37,9 @@ cornerF=[76.0043,240.0685];
 
 % CirclesFinder
 
-camCalibration=1.8947; %p/um % calibration fiducial
+% camCalibration=1.7254; %p/um % calibration fiducial
+camCalibration=1.74; %p/um % calibration fiducial (Last Pablo)
+% camCalibration=1.8947; %p/um % calibration fiducial (Obsolete Pablo)
 % camCalibration=3.5739; %p/um % sensor CNM
 % camCalibration=3.5739; %p/um % sensor CNM
 
