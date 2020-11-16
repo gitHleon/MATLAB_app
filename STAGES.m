@@ -411,6 +411,11 @@ classdef STAGES < handle
                     return
             end
             
+            if target > 500 || target < -500
+                fprintf ("\n\t ¡¡ Target position: %d out of gantry limmits !!", target);
+                return
+            end
+            
             switch this.GantryType
                 case 0
                     %insert here MoveTo with AEROTECH gantry %
@@ -935,6 +940,37 @@ classdef STAGES < handle
             % Return: none
             % Operation:   1- Move all Z axis to a safe height and wait finished
             %              2- Then move X and Y axis to the desired zone
+            
+            switch nargin
+                case 4
+                    
+                case 3
+                    wait = 0;
+                otherwise
+                    disp('\n Improper number of arguments ');
+                    return
+            end
+            
+            this.zSecurityPosition();
+            this.MoveTo(this.X, X, this.xyHighSpeed);
+            this.MoveTo(this.Y, Y, this.xyHighSpeed);
+            if wait == 1
+                this.WaitForMotionAll();
+            end
+        end
+        
+        function MoveToFast2(this, X, Y, varargin)
+            % function MoveToFast (this, X, Y)
+            % Arguments: X double, Y double, wait int
+            % (0-> Wait until movement finishes, 1-> No wait
+            % Return: none
+            % Operation:   1- Move all Z axis to a safe height and wait finished
+            %              2- Then move X and Y axis to the desired zone
+            
+            while ~isempty(varargin)
+                switch lower(varargin{1})
+                end
+            end
             
             switch nargin
                 case 4
