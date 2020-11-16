@@ -101,3 +101,53 @@ function [X, Y, Z1] = TakeFiducial()
 Z1 = gantry.GetPosistion(gantry.Z1);
 end
 
+
+gantry.MoveToFast(cal_position{1}(1),cal_position{1}(2))
+gantry.MoveTo(gantry.Z1,cal_position{1}(4),5)
+gantry.WaitForMotionAll;
+imagen1 = cam.OneFrame;
+figure, imshow(imagen1)
+hold on
+axis on
+figure(1), plot(corner{1}(1), corner{1}(2), 'go', 'MarkerSize', 200)%, 'LineWidth', 2);
+figure(1), plot(corner{1}(1), corner{1}(2), 'g+', 'MarkerSize', 20)%, 'LineWidth', 2);
+figure(1), plot(corner{1}(1), corner{1}(2), 'go', 'MarkerSize', 20)%, 'LineWidth', 2);
+figure(1), plot(corner{1}(1), corner{1}(2), 'go', 'MarkerSize', 50)%, 'LineWidth', 2);
+figure(1), plot(corner{1}(1), corner{1}(2), 'go', 'MarkerSize', 150)%, 'LineWidth', 2);
+figure(1), plot(corner{1}(1), corner{1}(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
+
+% figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 200)%, 'LineWidth', 2);
+% figure(1), plot(center(1), center(2), 'g+', 'MarkerSize', 20)%, 'LineWidth', 2);
+% figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 20)%, 'LineWidth', 2);
+% figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 50)%, 'LineWidth', 2);
+% figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 150)%, 'LineWidth', 2);
+% figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
+
+
+gantry.MoveToFast(cal_position{5}(1),cal_position{5}(2))
+gantry.MoveTo(gantry.Z1,cal_position{5}(4),5)
+gantry.WaitForMotionAll;
+imagen5 = cam.OneFrame;
+figure(1), imshow(imagen5)
+hold on
+axis on
+% [x,y] = getpts
+% corner{5} = [x,y]
+figure(1), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 200)%, 'LineWidth', 2);
+figure(1), plot(corner{5}(1), corner{5}(2), 'g+', 'MarkerSize', 20)%, 'LineWidth', 2);
+figure(1), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 20)%, 'LineWidth', 2);
+figure(1), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 50)%, 'LineWidth', 2);
+figure(1), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 150)%, 'LineWidth', 2);
+figure(1), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
+
+
+%% Going to compensated position
+
+deltaPixels = corner{5} - corner{1}
+deltaMicras = deltaPixels/camCalibration  % camCalibration = 1.74;
+deltaMilis = deltaMicras./1000
+cal_newPosition{5}(1:2) = cal_position{1}(1:2) + deltaMilis(1:2)
+cal_newPosition{5} = (cal_position{5}(1)*sin(alfa), cal_position{5}*cos(alfa))
+
+gantry.MoveToFast(cal_newPosition{5}(1),cal_newPosition{5}(2))
+gantry.MoveTo(gantry.Z1,cal_newPosition{5}(4),5)
