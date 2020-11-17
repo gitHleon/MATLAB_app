@@ -418,13 +418,13 @@ classdef STAGES < handle
                     return
             end
             
-            if isnan(target)
-                fprintf ("\n\t ¡¡ Target position of %d is nan !!", axis);
-                return
-            end
-            
             if target > 500 || target < -500
                 fprintf ("\n\t ¡¡ Target position: %d out of gantry limmits !!", target);
+                return
+            end
+            if isnan(target)
+                fprintf ("\n\t ¡¡ Target position: %d out of gantry limmits !!", target);
+                
                 return
             end
             
