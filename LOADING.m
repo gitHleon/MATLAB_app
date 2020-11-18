@@ -70,6 +70,11 @@ classdef LOADING < handle
             this.qLine24 = ((this.point{4}(2)*this.point{2}(1)) - (this.point{2}(2)*this.point{4}(1))) / (this.point{4}(2)-this.point{2}(2));
             
             intersection = 
+            % Interpolamos la función de ambas rectas mx+n
+            recta1 = interp1(x,y,n,'linear')
+            recta2 = ....
+                % Buscamos la intersección de los dos polinomios.
+                intersect
         end
         
         function Pick (this,module)
