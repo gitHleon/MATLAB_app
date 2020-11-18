@@ -3,6 +3,7 @@
 gantry = STAGES(2);
 gantry.Connect;
 gantry.MotorEnableAll;
+reposo = [-44.9425  448.7509         0  -15.9923 -100.0164    0.0120];
 
 joy = JOYSTICK (gantry);
 joy = joy.Connect;
@@ -11,6 +12,7 @@ joy = joy.Connect;
 
 fid=FIDUCIALS(1);
 
+imaqreset;
 cam= CAMERA(5);
 cam = cam.Connect;
 cam.DispCam
@@ -28,6 +30,9 @@ fiducial_1_Z = 13.3203;
 % fiducial_2 = [277.3143, 224.2575];
 fiducial_2 = [277.2958, 224.2069];
 fiducial_2_Z = 13.8901;
+
+fiducial1 = [133.4717 -359.2647         0   13.3203         0         0];
+fiducial2 = [277.2958  224.2069         0   13.8901         0         0];
 
 petal = PETALCS(0, fiducial_1, fiducial_2);
 

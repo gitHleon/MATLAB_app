@@ -169,15 +169,18 @@ figure(1), plot(corner{n}(1), corner{n}(2), 'go', 'MarkerSize', 200)%, 'LineWidt
 
 deltaPixels = corner{5} - corner{1}
 deltaMicras = deltaPixels/camCalibration  % camCalibration = 1.74;
-deltaMilis = deltaMicras./1000
+deltaMilims = deltaMicras./1000
+m = tan(deltaMilims(1)/deltaMilims(2))    % Pendiente de la recta
+alfa = atan(m)
 cal_newPosition{5}(1:2) = cal_position{1}(1:2) + deltaMilis(1:2)
 cal_newPosition{5} = (cal_position{5}(1)*sin(alfa), cal_position{5}*cos(alfa))
+
+cal_newPosition{5} = cal_position{1}(1:2) 
 
 gantry.MoveToFast(cal_newPosition{5}(1),cal_newPosition{5}(2))
 gantry.MoveTo(gantry.Z1,cal_newPosition{5}(4),5)
 
-
-%Cruce de dos rectas
+%% Cruce de dos rectas
 p1 = polyfit(x1,y1,1);
 p2 = polyfit(x2,y2,1);
 %calculate intersection
@@ -187,3 +190,4 @@ line(x1,y1);
 hold on;
 line(x2,y2);
 plot(x_intersect,y_intersect,'r*')
+%%
