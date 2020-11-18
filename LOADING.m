@@ -37,7 +37,7 @@ classdef LOADING < handle
         
         
         function milimeters = pixel2mm(this,pixels)
-            milimeters = pixels/camcalibration;
+            milimeters = (pixels/camcalibration)*1000;
         end
         
         function position = TakeFiducial(this,n)

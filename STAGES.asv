@@ -418,13 +418,13 @@ classdef STAGES < handle
                     return
             end
             
-            if target > 500 || target < -500
-                fprintf ("\n\t ¡¡ Target position: %d out of gantry limmits !!", target);
+            if isnan(target)
+                fprintf ("\n\t ¡¡ Target position of %d is nan !!", axis);
                 return
             end
-            if isnan(target)
+            
+            if target > 500 || target < -500
                 fprintf ("\n\t ¡¡ Target position: %d out of gantry limmits !!", target);
-                
                 return
             end
             
@@ -971,7 +971,7 @@ classdef STAGES < handle
             end
         end
         
-        function Move2Fast(this, varargin)
+        function Move2Fast(this,varargin)
             % function MoveToFast (this, X, Y)
             % Arguments: X double, Y double, wait int
             % (0-> Wait until movement finishes, 1-> No wait
@@ -987,6 +987,7 @@ classdef STAGES < handle
             
             addParameter (p, 'Position' , [nan, nan, nan, nan, nan, nan])
             addParameter (p, 'Velocity' , this.xyHighSpeed)
+            addParameter (p, 'Velocity' , this.xyHighSpeed)
             addParameter (p, 'Height'   , this.zSecureHeigh)
             addParameter (p, 'Wait'     , true)
             addParameter (p, 'X'        , nan)
@@ -995,22 +996,26 @@ classdef STAGES < handle
             addParameter (p, 'Z2'       , nan)
             addParameter (p, 'U'        , nan)
             
-            check = size(p.Position);
+            parse( p, varargin{:} )
+            ip = p.Results;
+            
+            fprintf("Posicición de destino %d %d %d %d %d %d -->\n", ip.Position(1), ip.Position(2), ip.Position(3), ip.Position(4), ip.Position(5), ip.Position(6))
+            check = size(ip.Position);
             if ~(check(1) == 1 && check(2) == (6))
                 disp ("Invalid destination")
                 return
             end
                 
             this.zSecurityPosition();
-            this.MoveTo(this.X,p.Position{this.vec.X},p.Velocity)
-            this.MoveTo(this.Y,p.Position{this.vec.Y},p.Velocity)
+            this.MoveTo(this.X,ip.Position(this.vectorX),ip.Velocity)
+            this.MoveTo(this.Y,ip.Position(this.vectorY),ip.Velocity)
             this.WaitForMotionAll();
             
-            this.MoveTo(this.U,p.Position{this.vec.U},p.Velocity)
-            this.MoveTo(this.Z1,p.Position{this.vec.Z1},p.Velocity)
-            this.MoveTo(this.Z2,p.Position{this.vec.Z2},p.Velocity)
+            this.MoveTo(this.U,ip.Position(this.vectorU),this.zHighSpeed)
+            this.MoveTo(this.Z1,ip.Position(this.vectorZ1),this.zHighSpeed)
+            this.MoveTo(this.Z2,ip.Position(this.vectorZ2),this.zHighSpeed)
             
-            if p.Wait
+            if ip.Wait
                 this.WaitForMotionAll();
             end
         end

@@ -142,7 +142,7 @@ figure(5), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 50)%, 'LineWidth
 figure(5), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 150)%, 'LineWidth', 2);
 figure(5), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
 
-n=4
+n=5
 figure(n), imshow (cal_imagenes{n})
             hold on
             axis on
@@ -154,8 +154,15 @@ figure(n), imshow (cal_imagenes{n})
             figure(n), plot(corner{n}(1), corner{n}(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
 
 
-
-
+figure(1), imshow (cal_imagenes{1})
+hold on
+axis on
+figure(1), plot(corner{n}(1), corner{n}(2), 'go', 'MarkerSize', 200)%, 'LineWidth', 2);
+            figure(1), plot(corner{n}(1), corner{n}(2), 'g+', 'MarkerSize', 20)%, 'LineWidth', 2);
+            figure(1), plot(corner{n}(1), corner{n}(2), 'go', 'MarkerSize', 20)%, 'LineWidth', 2);
+            figure(1), plot(corner{n}(1), corner{n}(2), 'go', 'MarkerSize', 50)%, 'LineWidth', 2);
+            figure(1), plot(corner{n}(1), corner{n}(2), 'go', 'MarkerSize', 150)%, 'LineWidth', 2);
+            figure(1), plot(corner{n}(1), corner{n}(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
 
 
 %% Going to compensated position
@@ -168,3 +175,15 @@ cal_newPosition{5} = (cal_position{5}(1)*sin(alfa), cal_position{5}*cos(alfa))
 
 gantry.MoveToFast(cal_newPosition{5}(1),cal_newPosition{5}(2))
 gantry.MoveTo(gantry.Z1,cal_newPosition{5}(4),5)
+
+
+%Cruce de dos rectas
+p1 = polyfit(x1,y1,1);
+p2 = polyfit(x2,y2,1);
+%calculate intersection
+x_intersect = fzero(@(x) polyval(p1-p2,x),3);
+y_intersect = polyval(p1,x_intersect);
+line(x1,y1);
+hold on;
+line(x2,y2);
+plot(x_intersect,y_intersect,'r*')
