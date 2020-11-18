@@ -105,7 +105,8 @@ end
 gantry.MoveToFast(cal_position{1}(1),cal_position{1}(2))
 gantry.MoveTo(gantry.Z1,cal_position{1}(4),5)
 gantry.WaitForMotionAll;
-imagen1 = cam.OneFrame;
+% imagen1 = cam.OneFrame;
+imagen1 = cal_imagenes{1};
 figure, imshow(imagen1)
 hold on
 axis on
@@ -127,18 +128,34 @@ figure(1), plot(corner{1}(1), corner{1}(2), 'go', 'MarkerSize', 100)%, 'LineWidt
 gantry.MoveToFast(cal_position{5}(1),cal_position{5}(2))
 gantry.MoveTo(gantry.Z1,cal_position{5}(4),5)
 gantry.WaitForMotionAll;
-imagen5 = cam.OneFrame;
-figure(1), imshow(imagen5)
+% imagen5 = cam.OneFrame;
+imagen5 = cal_imagenes{5};
+figure(5), imshow(imagen5)
 hold on
 axis on
 % [x,y] = getpts
 % corner{5} = [x,y]
-figure(1), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 200)%, 'LineWidth', 2);
-figure(1), plot(corner{5}(1), corner{5}(2), 'g+', 'MarkerSize', 20)%, 'LineWidth', 2);
-figure(1), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 20)%, 'LineWidth', 2);
-figure(1), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 50)%, 'LineWidth', 2);
-figure(1), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 150)%, 'LineWidth', 2);
-figure(1), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
+figure(5), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 200)%, 'LineWidth', 2);
+figure(5), plot(corner{5}(1), corner{5}(2), 'g+', 'MarkerSize', 20)%, 'LineWidth', 2);
+figure(5), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 20)%, 'LineWidth', 2);
+figure(5), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 50)%, 'LineWidth', 2);
+figure(5), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 150)%, 'LineWidth', 2);
+figure(5), plot(corner{5}(1), corner{5}(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
+
+n=4
+figure(n), imshow (cal_imagenes{n})
+            hold on
+            axis on
+            figure(n), plot(corner{n}(1), corner{n}(2), 'go', 'MarkerSize', 200)%, 'LineWidth', 2);
+            figure(n), plot(corner{n}(1), corner{n}(2), 'g+', 'MarkerSize', 20)%, 'LineWidth', 2);
+            figure(n), plot(corner{n}(1), corner{n}(2), 'go', 'MarkerSize', 20)%, 'LineWidth', 2);
+            figure(n), plot(corner{n}(1), corner{n}(2), 'go', 'MarkerSize', 50)%, 'LineWidth', 2);
+            figure(n), plot(corner{n}(1), corner{n}(2), 'go', 'MarkerSize', 150)%, 'LineWidth', 2);
+            figure(n), plot(corner{n}(1), corner{n}(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
+
+
+
+
 
 
 %% Going to compensated position
