@@ -103,11 +103,9 @@ classdef LOADING < handle
                 otherwise
                     disp("La cagaste")
             end
-            this.gantry.Move2Fast('Position',PicPos,'Z1',+10,'wait',true)
+            this.gantry.Move2Fast('Position',PicPos,'Z1',+5,'wait',true)
             this.gantry.WaitForMotionAll;
-            disp(" Please, check that gantry is in the correct position ");
-            pause
-            pick.runTouchdown(this.gantry.Z1,PicPos(this.gantry.vectorZ1));
+            pick.runTouchdown(this.gantry.Z1,PicPos(this.gantry.vectorZ1))
             disp(" Open vaccum 2 ");
             pause
             this.gantry.MoveTo(this.gantry.Z1,-10,1)
@@ -118,25 +116,19 @@ classdef LOADING < handle
         
         
         function DropPickup (this,module)
-            switch module
-                case 'R0'
-                    PicPos = PickupPosition.R0;
-                case 'R1'
-                    PicPos = PickupPosition.R1;
-                otherwise
-                    disp("La cagaste")
-            end
-
-            this.gantry.Move2Fast('Position',PicPos,'Z1',+10,'wait',true)
-            this.gantry.WaitForMotionAll;
-            this.gantry.MoveTo(this.gantry.Z1,PicPos(this.vectorZ1)+1,1)
-            this.gantry.WaitForMotionAll;
-            disp(" Please, close vaccum 2 and wait until pickup drops ");
-            pause
-            this.gantry.MoveTo(this.gantry.Z1,PicPos(this.vectorZ1)+20,5)
-            this.gantry.WaitForMotionAll;
-            disp(" Please, check that Pickup R0 have been dropped correctly  ");
-            pause
+            
+            
+            
+            
+            gantry.Move2Fast('Position',Pickup.R0,'Z1',+10,'wait',true)
+gantry.WaitForMotionAll;
+gantry.MoveTo(gantry.Z1,Pickup.R0(4)+1,1)
+disp(" Please, close vaccum 2 and wait until pickup drops ");
+pause
+gantry.MoveTo(gantry.Z1,-10,1)
+gantry.WaitForMotionAll;
+disp(" Please, check that Pickup R0 have been dropped correctly  ");
+pause
         end
         
         function PlotCheck (this, n)

@@ -214,30 +214,23 @@ Pp = polyfit(Px, Py);
 1
 
 %% Take pickup1
-PicPos = PickupPosition.R1;
-
-gantry.Move2Fast('Position',PicPos,'Z1',+10,'wait',true)
-gantry.WaitForMotionAll;
-disp(" Please, close vaccum 2 and wait until pickup drops ");
-pause
-pick.runTouchdown(gantry.Z1,PicPos(vectorZ1));
+this.gantry.Move2Fast('Position',PicPos,'Z1',+10,'wait',true)
+this.gantry.WaitForMotionAll;
+pick.runTouchdown(gantry.Z1,PicPos(vectorZ1))
 disp(" Open vaccum 2 ");
 pause
-gantry.MoveTo(gantry.Z1,PicPos(vectorZ1)+20,1)
-gantry.WaitForMotionAll;
+this.gantry.MoveTo(this.gantry.Z1,-10,1)
+this.gantry.WaitForMotionAll;
 disp(" Please, check that Pickup R0 have been taken correctly  ");
 pause
 
 %% Leave pickup1
-PicPos = PickupPosition.R1;
-
-gantry.Move2Fast('Position',PicPos,'Z1',+10,'wait',true)
+gantry.Move2Fast('Position',Pickup.R0,'Z1',+10,'wait',true)
 gantry.WaitForMotionAll;
-gantry.MoveTo(gantry.Z1,PicPos(vectorZ1)+1,1)
-gantry.WaitForMotionAll;
+gantry.MoveTo(gantry.Z1,Pickup.R0(4)+1,1)
 disp(" Please, close vaccum 2 and wait until pickup drops ");
 pause
-gantry.MoveTo(gantry.Z1,PicPos(vectorZ1)+20,5)
+gantry.MoveTo(gantry.Z1,-10,1)
 gantry.WaitForMotionAll;
 disp(" Please, check that Pickup R0 have been dropped correctly  ");
 pause
