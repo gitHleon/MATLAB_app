@@ -96,6 +96,7 @@ classdef FOCUS
                 Pn=Z0+R/2;
                 z=P0;
                 FocusValue=zeros(1,20);
+%                 ImageCrop = zeros(1,20);
                 Z=zeros(1,20);
                 delta=R/div;
                 samples=1;
@@ -109,7 +110,7 @@ classdef FOCUS
                     [data,~,~]=this.cam.retrieveDataOneFrame;
                     image{ImCont}=data;
                     % Asking focus parameter %
-                    FocusValue(fCont)=this.fmeasure(image{ImCont},this.FocusType,[x0,y0,RoiWidth,RoiHeight]);
+                    [FocusValue(fCont), ImageCrop{fCont}] = this.fmeasure(image{ImCont},this.FocusType,[x0,y0,RoiWidth,RoiHeight]);
                     % Updating counters %
                     zCont=zCont+1;
                     ImCont=ImCont+1;
@@ -161,11 +162,12 @@ classdef FOCUS
             % returning info %
             image=image(~cellfun('isempty',image));
             info.Zoptim=Zfinal;
-            info.Foptim=max(FocusAll);
+            [info.Foptim, info.IdexFoptim]=max(FocusAll);
             info.Zvalues=zAll;
             info.Fvalues=FocusAll;
             info.time=TotalTime;
             info.Images=image;
+            info.ImagesROI=ImageCrop;
         end
         
         
@@ -299,7 +301,7 @@ classdef FOCUS
         end
         
         
-        function FM = fmeasure(this,Image, Measure, ROI)
+        function [FM, ImageCrop] = fmeasure(this,Image, Measure, ROI)
             %This function measures the relative degree of focus of
             %an image. It may be invoked as:
             %
@@ -318,6 +320,7 @@ classdef FOCUS
             if nargin>2 && ~isempty(ROI)
                 Image = imcrop(Image, ROI);
             end
+            ImageCrop = Image;
             
             WSize = 15; % Size of local window (only some operators)
             
