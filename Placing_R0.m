@@ -170,7 +170,7 @@ figure(1), plot(corner{n}(1), corner{n}(2), 'go', 'MarkerSize', 200)%, 'LineWidt
 deltaPixels = corner{5} - corner{1}
 deltaMicras = deltaPixels/camCalibration  % camCalibration = 1.74;
 deltaMilims = deltaMicras./1000
-m = tan(deltaMilims(1)/deltaMilims(2))    % Pendiente de la recta
+m = (deltaMilims(1)/deltaMilims(2))    % Pendiente de la recta
 alfa = atan(m)
 cal_newPosition{5}(1:2) = cal_position{1}(1:2) + deltaMilis(1:2)
 cal_newPosition{5} = (cal_position{5}(1)*sin(alfa), cal_position{5}*cos(alfa))
@@ -181,13 +181,37 @@ gantry.MoveToFast(cal_newPosition{5}(1),cal_newPosition{5}(2))
 gantry.MoveTo(gantry.Z1,cal_newPosition{5}(4),5)
 
 %% Cruce de dos rectas
+x1 = [0, 10];
+y1 = [10, 0];
+x2 = [10, 0];
+y2= [10, 0];
 p1 = polyfit(x1,y1,1);
 p2 = polyfit(x2,y2,1);
-%calculate intersection
 x_intersect = fzero(@(x) polyval(p1-p2,x),3);
 y_intersect = polyval(p1,x_intersect);
+
+module_center = [x_intersect, y_intersect];
+%plot it
 line(x1,y1);
 hold on;
 line(x2,y2);
 plot(x_intersect,y_intersect,'r*')
-%%
+
+%% Compensating...
+x = [corner{1}(1), corner{5}(1)];
+y = [corner{1}(2), corner{5}(2)];
+p = polyfit(x,y,1);
+m = (y(2)-y(1))/(x(2)-x(1));                    % Igual que p(1)
+n = (y(2)*x(1)) - (y(1)*x(2)) / (y(2)-y(1));    % Debería ser igual que p(2) pero no lo és.
+
+[m,n]=size(cal_imagenes{1});
+center=[n/2,m/2]
+
+[Px(1),Py(1)] = getpts
+Px(2) = center(1);
+Py(2) = center(2);
+Pp = polyfit(Px, Py);
+1
+
+
+
