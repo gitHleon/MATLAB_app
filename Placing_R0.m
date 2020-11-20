@@ -18,9 +18,10 @@ imshow(imagen)
 [m,n,k]=size(imagen)
 center=[n/2,m/2];
 
+figure(n), imshow(imagen{n-1})
 axis on
 hold on
-plot(center(1),center(2), 'r+', 'MarkerSize', 30);% 'LineWidth', 2);
+figure(n)plot(center(1),center(2), 'r+', 'MarkerSize', 30);% 'LineWidth', 2);
 [corner(1),corner(2)] = getpts
 plot(corner(1), corner(2), 'g+', 'MarkerSize', 30)%, 'LineWidth', 2);
 
@@ -117,12 +118,14 @@ figure(1), plot(corner{1}(1), corner{1}(2), 'go', 'MarkerSize', 50)%, 'LineWidth
 figure(1), plot(corner{1}(1), corner{1}(2), 'go', 'MarkerSize', 150)%, 'LineWidth', 2);
 figure(1), plot(corner{1}(1), corner{1}(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
 
-% figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 200)%, 'LineWidth', 2);
-% figure(1), plot(center(1), center(2), 'g+', 'MarkerSize', 20)%, 'LineWidth', 2);
-% figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 20)%, 'LineWidth', 2);
-% figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 50)%, 'LineWidth', 2);
-% figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 150)%, 'LineWidth', 2);
-% figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
+hold on
+axis on
+figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 200)%, 'LineWidth', 2);
+figure(1), plot(center(1), center(2), 'g+', 'MarkerSize', 20)%, 'LineWidth', 2);
+figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 20)%, 'LineWidth', 2);
+figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 50)%, 'LineWidth', 2);
+figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 150)%, 'LineWidth', 2);
+figure(1), plot(center(1), center(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
 
 
 gantry.MoveToFast(cal_position{5}(1),cal_position{5}(2))
@@ -241,3 +244,41 @@ gantry.MoveTo(gantry.Z1,PicPos(vectorZ1)+20,5)
 gantry.WaitForMotionAll;
 disp(" Please, check that Pickup R0 have been dropped correctly  ");
 pause
+
+%% Calibrating with Guillem
+imagen{n} = cam.OneFrame;
+
+[y,x] = size(imagen{n});
+center = [x/2,y/2];
+
+figure(n), imshow(imagen{n})
+axis on
+hold on
+figure(n),plot(center(1),center(2), 'r+', 'MarkerSize', 30);% 'LineWidth', 2);
+[point{n}(1),point{n}(2)] = getpts
+plot(point{n}(1), point{n}(2), 'g+', 'MarkerSize', 30)%, 'LineWidth', 2);
+
+plot([corner(1) center(1)],[corner(2) center(2)], 'r', 'LineWidth', 2);
+
+H=sqrt(distancia(1)^2+distancia(2)^2)
+
+%% Again
+
+g_position{n} = gantry.GetPositionAll
+imagen{n} = cam.OneFrame;
+figure(n), imshow(imagen{n})
+axis on
+hold on
+
+[y,x] = size(imagen{n});
+center = [x/2,y/2];
+figure(n),plot(center(1),center(2), 'r+', 'MarkerSize', 30);% 'LineWidth', 2);
+
+[g_point{n}(1),g_point{n}(2)] = getpts
+
+figure(n), plot(g_point{n}(n), g_point{n}(2), 'go', 'MarkerSize', 200)%, 'LineWidth', 2);
+figure(n), plot(g_point{n}(n), g_point{n}(2), 'g+', 'MarkerSize', 20)%, 'LineWidth', 2);
+figure(n), plot(g_point{n}(n), g_point{n}(2), 'go', 'MarkerSize', 20)%, 'LineWidth', 2);
+figure(n), plot(g_point{n}(n), g_point{n}(2), 'go', 'MarkerSize', 50)%, 'LineWidth', 2);
+figure(n), plot(g_point{n}(n), g_point{n}(2), 'go', 'MarkerSize', n50)%, 'LineWidth', 2);
+figure(n), plot(g_point{n}(n), g_point{n}(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
