@@ -421,9 +421,7 @@ classdef STAGES < handle
             if isnan(target)
                 fprintf ("\n\t ¡¡ Target position of %d is nan !!", axis);
                 return
-            end
-            
-            if target > 500 || target < -500
+            elseif target > 500 || target < -500
                 fprintf ("\n\t ¡¡ Target position: %d out of gantry limmits !!", target);
                 return
             end
@@ -998,17 +996,35 @@ classdef STAGES < handle
             
             parse( p, varargin{:} )
             ip = p.Results;
+            if (~isnan(ip.X))
+                disp("Cambiandoooo X");
+                ip.Position(this.vectorZ1) = ip.X;
+            end
+            if (~isnan(ip.Y))
+                disp("Cambiandoooo Y");
+                ip.Position(this.vectorY) = ip.Y;
+            end
             if (~isnan(ip.Z1))
-                disp("Cambiandoooo");
+                disp("Cambiandoooo Z1");
                 ip.Position(this.vectorZ1) = ip.Z1;
             end
+            if (~isnan(ip.Z2))
+                disp("Cambiandoooo Z2");
+                ip.Position(this.vectorZ2) = ip.Z2;
+            end
+            if (~isnan(ip.Z1))
+                disp("Cambiandoooo U");
+                ip.Position(this.vectorU) = ip.U;
+            end
             
-            fprintf("Posicición de destino %d %d %d %d %d %d -->\n", ip.Position(1), ip.Position(2), ip.Position(3), ip.Position(4), ip.Position(5), ip.Position(6))
+            fprintf("\nPosicición de destino %d %d %d %d %d %d -->\n", ip.Position(1), ip.Position(2), ip.Position(3), ip.Position(4), ip.Position(5), ip.Position(6))
             check = size(ip.Position);
             if ~(check(1) == 1 && check(2) == (6))
                 disp ("Invalid destination")
                 return
             end
+         
+                    
                 
             this.zSecurityPosition();
             this.MoveTo(this.U,ip.Position(this.vectorU),this.zHighSpeed)
