@@ -1,4 +1,4 @@
-classdef CAMERA
+classdef CAMERA < handle
     %CAMERA Class that manage different cameras of out setup (input constructor required)
     %     old camera Gantry high resolution --> 1
     %     camera Gantry visual inspection --> 2
@@ -174,9 +174,21 @@ classdef CAMERA
         end
         
         %%  DispCam display camera video in a independent windows   %%
-        function DispCam(this)
-            figure('Name', 'Camera Display');
-            uicontrol('String', 'Close', 'Callback', 'close(gcf)');
+        function DispCam(this,n)
+            disp (nargin)
+            if nargin == 2
+%                 figure(n)
+%                 pause
+            else
+%                 figure(1)
+                    n = 1;
+            end
+            fig2=figure(n);
+            fig2.Name='Camera Display';
+            fig2.Position = [1355 577 560 420];
+%             figure('Name', 'Camera Display');
+%             uicontrol('String', 'Close', 'Callback', 'close(gcf)');
+            uicontrol('Parent', fig2, 'String', 'Close', 'Callback', 'close(gcf)');
             vidRes = [this.ROIPos(3),this.ROIPos(4)];
             nBands = this.cam.NumberOfBands;
             hImage = image( zeros(vidRes(2), vidRes(1), nBands) );

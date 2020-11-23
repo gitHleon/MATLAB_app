@@ -21,7 +21,7 @@ center=[n/2,m/2];
 figure(n), imshow(imagen{n-1})
 axis on
 hold on
-figure(n)plot(center(1),center(2), 'r+', 'MarkerSize', 30);% 'LineWidth', 2);
+figure(n), plot(center(1),center(2), 'r+', 'MarkerSize', 30);% 'LineWidth', 2);
 [corner(1),corner(2)] = getpts
 plot(corner(1), corner(2), 'g+', 'MarkerSize', 30)%, 'LineWidth', 2);
 
@@ -33,8 +33,6 @@ correction=(center - corner).*calibration/1000
 gantry.MoveBy(gantry.X, correction(1), 1)
 
 % [x,y] = getpts 
-
-
 
 
 

@@ -276,8 +276,16 @@ classdef TOUCHDOWN < handle
             this.gantry.MotionStop(axis)
            if toc(searchingTime)>this.maxSearchingTime
                disp('Maximum time reached')
+               info.contact = 0;
            else
                fprintf( 'Contact reached --> Trig1=%d, Trig2=%d', this.principalTrigger, this.secondaryTrigger);
+               if this.principalTrigger
+                   contact = 1;
+               end
+               if this.secondaryTrigger
+                   contact = contact+2;
+               end
+               info.contact = contact;
            end
             
             

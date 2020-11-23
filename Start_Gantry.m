@@ -3,7 +3,7 @@
 gantry = STAGES(2);
 gantry.Connect;
 gantry.MotorEnableAll;
-gantry.HomeAll;
+% gantry.HomeAll;
 reposo = [-44.9425  448.7509         0  -15.9923 -100.0164    0.0120];
 
 joy = JOYSTICK (gantry);
@@ -14,9 +14,11 @@ joy = joy.Connect;
 fid=FIDUCIALS(1);
 
 imaqreset;
-cam= CAMERA(5);
-cam = cam.Connect;
+cam = CAMERA(5);
+cam.Connect;
 % cam.DispCam
+
+loading = LOADING(gantry,cam);
 
 focus = FOCUS(gantry, cam,1);
 

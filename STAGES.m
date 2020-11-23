@@ -1012,7 +1012,7 @@ classdef STAGES < handle
                 disp("Cambiandoooo Z2");
                 ip.Position(this.vectorZ2) = ip.Z2;
             end
-            if (~isnan(ip.Z1))
+            if (~isnan(ip.U))
                 disp("Cambiandoooo U");
                 ip.Position(this.vectorU) = ip.U;
             end
