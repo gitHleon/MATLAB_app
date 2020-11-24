@@ -13,3 +13,6 @@ Sometimes crashes while focusing with autofocus. Must fix it.
 Focus doesn't work with calibration board when background is not white
 
 Img = rot90(Img,rotation);
+
+info = rendererinfo(gca);
+Img = imrotate(imagen1,alfa);
