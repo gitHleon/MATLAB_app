@@ -211,7 +211,7 @@ classdef CAMERA < handle
             switch nargin
                 case '1'
                     n = 1;
-%                     break;
+% %                     break;
                 otherwise
                     imagen = this.OneFrame;
                     disp ("No hay imagen")

@@ -280,3 +280,36 @@ figure(n), plot(g_point{n}(n), g_point{n}(2), 'go', 'MarkerSize', 20)%, 'LineWid
 figure(n), plot(g_point{n}(n), g_point{n}(2), 'go', 'MarkerSize', 50)%, 'LineWidth', 2);
 figure(n), plot(g_point{n}(n), g_point{n}(2), 'go', 'MarkerSize', n50)%, 'LineWidth', 2);
 figure(n), plot(g_point{n}(n), g_point{n}(2), 'go', 'MarkerSize', 100)%, 'LineWidth', 2);
+
+%% Camera angle
+for n=1:3
+    x(n) = info.Fid_IC{n}(1)
+end
+
+for n=1:3
+    y(n) = info.Fid_IC{n}(2)
+end
+
+x1(1) = x(3);
+x1(2) = x(1);
+x1(3) = x(2);
+y1(1) = y(3);
+y1(2) = y(1);
+y1(3) = y(2);
+
+p1 = polyfit(x1,y1,1);
+p2 = polyfit(x24,y24,1);
+x_intersect = fzero(@(x) polyval(p1-p2,x),3);
+y_intersect = polyval(p1,x_intersect);
+
+close all
+figure(n), plot(x1,y1,'g')
+hold on
+axis on
+figure(n), plot(x1,y1,'g*')
+figure(n), plot(xtest,ytest,'r')
+figure(n), plot(x1,y1,'g*')
+figure(n), plot(xtest,ytest,'r*')
+
+
+
