@@ -65,9 +65,9 @@ classdef LOADING < handle
             
             this.Fid_img{n} = this.cam.OneFrame;
             this.cam.DispCam(n);
-            hold on
-            axis on
-            this.PlotCenter(10)
+%             hold on
+%             axis on
+            this.cam.PlotCenter(n);
             pause
             
             % Take one fiducial position
@@ -83,14 +83,14 @@ classdef LOADING < handle
             [x,y] = this.Img2Gantry(this.Fid_IC{n});  
             
             % Create the position vector for gantry
-            this.Fid_GC = this.gantry.GetPositionAll;
-            this.Fid_GC(this.gantry.vectorX) = x;
-            this.Fid_GC(this.gantry.vectorY) = y;
+            this.Fid_GC{n} = this.gantry.GetPositionAll;
+            this.Fid_GC{n}(this.gantry.vectorX) = x;
+            this.Fid_GC{n}(this.gantry.vectorY) = y;
         end
         
         function [x,y] = Img2Gantry(this, Img_Coord)
-            x = Img_Coord(1);
-            y = Img_Coord(2);
+            x = this.gantry.GetPosition(this.gantry.X);
+            y = this.gantry.GetPosition(this.gantry.Y);
         end
         
         function intersection = CalculateCenter(this, F1, F2, F3, F4)
@@ -171,15 +171,18 @@ classdef LOADING < handle
         function PlotCenter (this, n, imagen)
             switch nargin
                 case '2'
-                    
+                    imagen = this.cam.OneFrame;
+%                     break;
                 case '3'
                     figure(n), imshow(imagen);
+%                     break;
                 otherwise
+                    imagen = this.cam.OneFrame;
                     disp ("No hay imagen")
             end
                 hold on
                 axis on
-                [x,y]=size(this.Fid_img{n});
+                [x,y]=size(imagen);
                 center = [y/2, x/2];
                 center(1)
                 center(2)

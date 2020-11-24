@@ -174,8 +174,16 @@ classdef CAMERA < handle
         end
         
         %%  DispCam display camera video in a independent windows   %%
-        function DispCam(this,n)
-            disp (nargin)
+        function DispCam(this,n)% plotcenter)
+%             switch (nargin)
+%                 case 3
+%                     %center = true;
+%                 case 2
+%             
+%                 case 1
+%                     n=1;
+%                 otherwise
+%             end
             if nargin == 2
 %                 figure(n)
 %                 pause
@@ -193,7 +201,37 @@ classdef CAMERA < handle
             nBands = this.cam.NumberOfBands;
             hImage = image( zeros(vidRes(2), vidRes(1), nBands) );
             preview(this.cam, hImage);
+            
+%             if center
+%                 this.PlotCenter(n)
+%             end
         end
+        
+        function PlotCenter (this, n)
+            switch nargin
+                case '1'
+                    n = 1;
+%                     break;
+                otherwise
+                    imagen = this.OneFrame;
+                    disp ("No hay imagen")
+            end
+                hold on
+                axis on
+                [x,y]=size(imagen);
+                center = [y/2, x/2];
+                center(1);
+                center(2);
+                
+                figure(n), plot(center(1), center(2), 'ro', 'MarkerSize', 200)%, 'LineWidth', 2);
+                figure(n), plot(center(1), center(2), 'r+', 'MarkerSize', 20)%, 'LineWidth', 2);
+                figure(n), plot(center(1), center(2), 'ro', 'MarkerSize', 20)%, 'LineWidth', 2);
+                figure(n), plot(center(1), center(2), 'ro', 'MarkerSize', 50)%, 'LineWidth', 2);
+                figure(n), plot(center(1), center(2), 'ro', 'MarkerSize', 150)%, 'LineWidth', 2);
+                figure(n), plot(center(1), center(2), 'ro', 'MarkerSize', 100)%, 'LineWidth', 2);
+        end
+        
+            
         
         %%  DispCamOff close the display of the camera   %%
         function DispCamOff(this)
