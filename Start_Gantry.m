@@ -26,7 +26,8 @@ dispenser = DISPENSER;
 
 %fiducial_1 = [133.3216, -359.4739]; Obsolete
 % fiducial_1 = [133.4871, -359.0796];
-fiducial_1 = [133.4717, -359.2647];
+% fiducial_1 = [133.4717, -359.2647];
+fiducial_1 = [133.1885 -358.8875         0   13.3203         0         0]
 fiducial_1_Z = 13.3203;
 % fiducial_2 = [277.0741, 223.8666];
 %fiducial_2 = [277.3340, 224.2251];

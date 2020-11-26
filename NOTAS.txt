@@ -16,3 +16,6 @@ Img = rot90(Img,rotation);
 
 info = rendererinfo(gca);
 Img = imrotate(imagen1,alfa);
+
+DispCam should not fit to windows and keep proportions
+camCalibration should be loaded at the begging of loading class¿¿??

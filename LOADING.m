@@ -53,6 +53,7 @@ classdef LOADING < handle
         
         
         function milimeters = pixel2mm(this,pixels)
+            camcalibration=1.74
             milimeters = (pixels/camcalibration)/1000;
         end
         
@@ -63,6 +64,7 @@ classdef LOADING < handle
             % Take the fiducial coordinates and get its position
             % on gantry coordinate system (GC)
             
+            this.cam.DispCamOff;
             this.Fid_img{n} = this.cam.OneFrame;
             this.cam.DispCam(n);
 %             hold on
@@ -89,8 +91,24 @@ classdef LOADING < handle
         end
         
         function [x,y] = Img2Gantry(this, Img_Coord)
-            x = this.gantry.GetPosition(this.gantry.X);
-            y = this.gantry.GetPosition(this.gantry.Y);
+            angle=1.5540-90;
+            R = [cosd(angle),-sind(angle);cosd(angle),sind(angle)];
+            
+            center = size(this.Fid_img{1})/2;
+            centerx = center(2);
+            centery = center(1);
+            center =[centerx, centery]  %%Invertido
+            CoordenadasClick(1) = Img_Coord(1) - center(1)
+            CoordenadasClick(2) = -(Img_Coord(2) - center(2))
+            CoordenadasPixRotados = CoordenadasClick*R
+            xImage = this.pixel2mm(CoordenadasPixRotados(1));
+            yImage = this.pixel2mm(CoordenadasPixRotados(2));
+            Coordenadasmm = [xImage,yImage]
+            
+%             xImage = xImage-xImage*cos(alfa)
+            
+            x = this.gantry.GetPosition(this.gantry.X) + Coordenadasmm(1);
+            y = this.gantry.GetPosition(this.gantry.Y) - Coordenadasmm(2);
         end
         
         function intersection = CalculateCenter(this, F1, F2, F3, F4)
