@@ -54,6 +54,7 @@ classdef LOADING < handle
         
         function milimeters = pixel2mm(this,pixels)
             camcalibration=1.74
+%             camcalibration=1.7319
             milimeters = (pixels/camcalibration)/1000;
         end
         
@@ -67,8 +68,6 @@ classdef LOADING < handle
             this.cam.DispCamOff;
             this.Fid_img{n} = this.cam.OneFrame;
             this.cam.DispCam(n);
-%             hold on
-%             axis on
             this.cam.PlotCenter(n);
             pause
             
@@ -91,13 +90,19 @@ classdef LOADING < handle
         end
         
         function [x,y] = Img2Gantry(this, Img_Coord)
-            angle=1.5540-90;
-            R = [cosd(angle),-sind(angle);cosd(angle),sind(angle)];
+%             angle=1.5540-90;
+            angle = 89.0393;
+%             R = rotx(angle);
+%             R = [cosd(angle),-sind(angle);sind(angle),cosd(angle)];
             
+            R = [0.0168, -0.999 ; 0.999, 0.0168];
             center = size(this.Fid_img{1})/2;
+            %%Invertimos X-Y
             centerx = center(2);
             centery = center(1);
-            center =[centerx, centery]  %%Invertido
+            center =[centerx, centery]
+            
+            coordenadas = Img_Coord
             CoordenadasClick(1) = Img_Coord(1) - center(1)
             CoordenadasClick(2) = -(Img_Coord(2) - center(2))
             CoordenadasPixRotados = CoordenadasClick*R
@@ -108,7 +113,7 @@ classdef LOADING < handle
 %             xImage = xImage-xImage*cos(alfa)
             
             x = this.gantry.GetPosition(this.gantry.X) + Coordenadasmm(1);
-            y = this.gantry.GetPosition(this.gantry.Y) - Coordenadasmm(2);
+            y = this.gantry.GetPosition(this.gantry.Y) + Coordenadasmm(2);
         end
         
         function intersection = CalculateCenter(this, F1, F2, F3, F4)
@@ -144,7 +149,7 @@ classdef LOADING < handle
                 otherwise
                     disp("La cagaste")
             end
-            this.gantry.Move2Fast('Position',this.PickPos,'Z1',+10, 'Z2', 30,'wait',true)
+            this.gantry.Move2Fast(this.PickPos,'Z1',+10, 'Z2', 30,'wait',true)
             this.gantry.WaitForMotionAll;
             disp(" Please, check that gantry is in the correct position ");
             pause
@@ -315,6 +320,38 @@ classdef LOADING < handle
 %             X = PX/camCalibration;
 %             Y = PY/camCalibration;
 %         end
+        
+
+%% To delete
+ function info = CalcFiducial(this,n)
+            % function TakeFiducial(this)
+            % Arg: n       % Fiducial number we are taking
+            % Return: none
+            % Take the fiducial coordinates and get its position
+            % on gantry coordinate system (GC)
+            
+            fiducial1_True = [133.1863, -358.8931, NaN, 13.3203, 0, 0];
+            fidudial1_First = [133.4717, -359.2647, 0, 13.3203, 0, 0];
+ 
+%             this.Fid_IC{n} = [387.1, 1218];
+            this.Fid_IC{n} = [387.1, 1283.6];
+            
+            % Plot it in order to check
+%             this.PlotCheck (n);
+            
+            % Change to Gantry Coordinates
+            [x,y] = this.Img2Gantry(this.Fid_IC{n});  
+            
+            % Create the position vector for gantry
+            this.Fid_GC{n} = fidudial1_First;
+            this.Fid_GC{n}(this.gantry.vectorX) = x;
+            this.Fid_GC{n}(this.gantry.vectorY) = y;
+            
+            info.DespCalc = fidudial1_First - this.Fid_GC{n};
+            info.DespReal = fidudial1_First - fiducial1_True;
+            info.fiducial1_True = fiducial1_True;
+            info.fiducial1 = fidudial1_First;
+        end
         
     end
 end

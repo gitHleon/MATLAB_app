@@ -14,7 +14,10 @@ Focus doesn't work with calibration board when background is not white
 
 Img = rot90(Img,rotation);
 
-info = rendererinfo(gca);
+info = rendererinfo(gca)
+opengl info
+opengl ( 'hardware' )
+
 Img = imrotate(imagen1,alfa);
 
 DispCam should not fit to windows and keep proportions

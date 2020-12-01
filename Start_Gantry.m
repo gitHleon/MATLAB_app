@@ -4,7 +4,7 @@ gantry = STAGES(2);
 gantry.Connect;
 gantry.MotorEnableAll;
 % gantry.HomeAll;
-reposo = [-44.9425  448.7509         0  -15.9923 -100.0164    0.0120];
+reposo = [-44.9425  448.7509         nan  -15.9923 -100.0164    0.0120];
 
 joy = JOYSTICK (gantry);
 joy = joy.Connect;

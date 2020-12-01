@@ -42,19 +42,18 @@ classdef STAGES < handle
         Z2=5;
         U=6;
         
+        % The order of the axes in the position vector.
+        % [X,Y,null,Z1,Z2,U]
         vectorX = 1;
         vectorY = 2;
         vectorZ1 = 4;
         vectorZ2 = 5;
-        vectorU = 6;
-        
-%         vec = nan(1,6); % Position vector
+        vectorU = 6;        
     end
     
-    properties (Access=public)
+    properties (Access=protected)
         
         % General Properties %
-        
         GantryType;
         xAxis;
         yAxis;
@@ -295,7 +294,7 @@ classdef STAGES < handle
             
             value (1) = this.GetPosition(this.X);
             value (2) = this.GetPosition(this.Y);
-%             value (3) = this.GetPosition(2);
+            value (3) = nan;
             value (4) = this.GetPosition(this.Z1);
             value (5) = this.GetPosition(this.Z2);
             value (6) = this.GetPosition(this.U);
@@ -927,24 +926,27 @@ classdef STAGES < handle
         
         %% Moving improvements %%
         
-        function zSecurityPosition(this)
+        function zSecurityPosition(this, velocity)
             % function zSecurityPosition (this)
             % Arguments: none
             % Return: none
             % 1- Move all Z axis to the defined safe height
             % 2- Wait until movement finishes
+            if nargin ==1
+                velocity = this.zHighSpeed;
+            end
             
             if (this.GetPosition(this.Z1) <= this.zSecureHeigh)
-                this.MoveTo(this.Z1, this.zSecureHeigh,this.zHighSpeed);
+                this.MoveTo(this.Z1, this.zSecureHeigh,velocity);
             end
             if (this.GetPosition(this.Z2) <= this.zSecureHeigh)
-                this.MoveTo(this.Z2, this.zSecureHeigh,this.zHighSpeed);
+                this.MoveTo(this.Z2, this.zSecureHeigh,velocity);
             end
             this.WaitForMotionAll(this.DefaultTimeOut);
         end
         
         function MoveToFast(this, X, Y, wait)
-            % function MoveToFast (this, X, Y)
+            % function MoveToFast (this, X, Y) Old function. Use Move2Fast.
             % Arguments: X double, Y double, wait int
             % (0-> Wait until movement finishes, 1-> No wait
             % Return: none
@@ -970,39 +972,50 @@ classdef STAGES < handle
         end
         
         function ip = Move2Fast(this, Position, varargin)
-            % function MoveToFast (this, X, Y)
-            % Arguments: X double, Y double, wait int
-            % (0-> Wait until movement finishes, 1-> No wait
-            % Return: none
+            % function Move2Fast (this, Position)
+            % Arguments: Position double (vector or scalar)
+            % Optional Arguments: Velocity, ZVelocity, Height, Wait, X, Y,
+            % Z1, Z2, U
+            % Optional Arguments override position and default settings
+            % Return: Selected arguments
             % Operation:   1- Move all Z axis to a safe height and wait finished
-            %              2- Then move X and Y axis to the desired zone
+            %              2- Then move to the desired Position
+            
+            %Check if Position is a numeric
+            if ~isnumeric(Position)
+                fprintf("\n\t Invalid destination: %s\n", Position)
+                return
+            end
             
             p = inputParser();
-            p.KeepUnmatched = false;
+            p.KeepUnmatched = true;
             p.CaseSensitive = false;
             p.StructExpand  = false;
             p.PartialMatching = true;
             
             addParameter (p, 'Position' , [nan, nan, nan, nan, nan, nan])
             addParameter (p, 'Velocity' , this.xyHighSpeed)
-            addParameter (p, 'ZVelocity' , this.xyHighSpeed)
+            addParameter (p, 'ZVelocity' , this.zHighSpeed)
             addParameter (p, 'Height'   , this.zSecureHeigh)
-            addParameter (p, 'Wait'     , true)
+            addParameter (p, 'Wait'     , false)
             addParameter (p, 'X'        , nan)
             addParameter (p, 'Y'        , nan)
             addParameter (p, 'Z1'       , nan)
             addParameter (p, 'Z2'       , nan)
             addParameter (p, 'U'        , nan)
             
+            
             parse( p, varargin{:} )
             ip = p.Results;
             
-            if isvector(Position)
+            % Check if target position is a vector and has a properly
+            % length
+            if ~isscalar(Position)
                 check = size(Position);
                 ip.Position = Position;
-                if ~(check(1) == 1 && check(2) <= 6)
+                if ~(check(1) == 1 && check(2) <= 6)   % If is a vector 1x6
                     disp ("Invalid destination")
-                    fprintf("\n ¡¡Invalid destination!! --> %d %d %d %d %d %d\n", ip.Position(1), ip.Position(2), ip.Position(3), ip.Position(4), ip.Position(5), ip.Position(6))
+                    fprintf("\n ¡¡Invalid destination!! --> %d %d %d %d %d %d\n", ip.Position)
 
                 else
                     ip.Position(check(2)+1:6) = nan
@@ -1030,26 +1043,17 @@ classdef STAGES < handle
                 disp("Cambiandoooo U");
                 ip.Position(this.vectorU) = ip.U;
             end
-            
-            check = size(ip.Position);
-%             if ~(check(1) == 1 && check(2) == (6))
-%                 ip.Position = Position;
-%                 disp ("Invalid destination")
-%                 return
+%             if (~isnan(ip.Velocity))
+%                 disp("Cambiandoooo Velicidad");
+%                 ip.V(this.Velocity) = ip.Velocity;
 %             end
-%             
-%             if ~(check(1) == 1 && check(2) == (6))
-%                 ip.Position = Position;
-%                 disp ("Invalid destination")
-%                 return
-%             end
-            
+                    
             
             
             fprintf("\n Posicición de destino -->(%d %d %d %d %d %d)\n", ip.Position(1), ip.Position(2), ip.Position(3), ip.Position(4), ip.Position(5), ip.Position(6))
                 
-            this.zSecurityPosition();
-            this.MoveTo(this.U,ip.Position(this.vectorU),this.zHighSpeed)
+            this.zSecurityPosition(ip.ZVelocity);
+            this.MoveTo(this.U,ip.Position(this.vectorU),ip.ZVelocity)
             this.MoveTo(this.X,ip.Position(this.vectorX),ip.Velocity)
             this.MoveTo(this.Y,ip.Position(this.vectorY),ip.Velocity)
             this.WaitForMotionAll();
@@ -1057,7 +1061,11 @@ classdef STAGES < handle
             this.MoveTo(this.Z1,ip.Position(this.vectorZ1),this.zHighSpeed)
             this.MoveTo(this.Z2,ip.Position(this.vectorZ2),this.zHighSpeed)
             
-            if ip.Wait
+            
+            
+%             if isfield(ip,'Wait')
+            if ip.Wait 
+                disp("Waiting")
                 this.WaitForMotionAll();
             end
         end
