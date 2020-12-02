@@ -7,7 +7,7 @@ gantry.MotorEnableAll;
 reposo = [-44.9425  448.7509         nan  -15.9923 -100.0164    0.0120];
 
 joy = JOYSTICK (gantry);
-joy = joy.Connect;
+joy.Connect;
 
 % gantry.MotorEnableAll
 

@@ -41,7 +41,7 @@ classdef JOYSTICK < handle
         end
         end
         
-        function this = Connect(this)
+        function Connect(this)
             %Connect Connecting joystick
             % starting timer to manage the joystick input
         this.gantry.MotorEnableAll;     
@@ -58,7 +58,7 @@ classdef JOYSTICK < handle
         this.IsConnected = 1;
         end
         
-        function this = Disconnect(this)
+        function Disconnect(this)
             %Disconnect Disconnect joystick
             % Stopping timer
         stop(this.t);

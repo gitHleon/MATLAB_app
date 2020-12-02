@@ -7,8 +7,6 @@ Errors to debug in the near future:
     Fixed adding a little delay between dispensing lines.
     Could try to improve air flow from the line to the dispenser (¿Increase input pipe in diameter?, ¿Shorter air input pipe?)
 
-2- Joystick movements does not check table limits
-
 
 Error to be debugged in the future:
 1- function WaitForMotion --> A timeout error have no real effect. An error appear in the Command Window and program execution continues
@@ -17,11 +15,12 @@ Error to be debugged in the future:
 4- Gantry table limits should be checked at the beggining of Movement function. Currently a program could move all axis exept the failing one.
 5- Movement error feedback to the program, not just in console.
 6- Camera sometimes crashes when fast movements
-7- AutoFocus sometimes fails with calibration board when background is not white
-8- AutoFocus returns a succesfull answer when there is nothing in the center of the camera. It should return an error.
-   AutoFocus crops the imput image for better performance. It should detect if input image is not focusable.
+7- Focus doesn't work with calibration board when background is not white
+8- Focus return a succesfull answer when it can not
 
 Img = rot90(Img,rotation);
+
+
 Img = imrotate(imagen1,alfa);
 
 DispCam should not fit to windows and keep proportions
