@@ -1032,7 +1032,6 @@ classdef STAGES < handle
                 end
             end
             
-            
             if (~isnan(ip.X))
                 ip.Position(this.vectorZ1) = ip.X;
             end
@@ -1047,13 +1046,8 @@ classdef STAGES < handle
             end
             if (~isnan(ip.U))
                 ip.Position(this.vectorU) = ip.U;
-            end
-%             if (~isnan(ip.Velocity))
-%                 ip.V(this.Velocity) = ip.Velocity;
-%             end
-                    
-            
-            
+            end      
+ 
             fprintf("\n Posicición de destino -->(%d %d %d %d %d %d)\n", ip.Position(1), ip.Position(2), ip.Position(3), ip.Position(4), ip.Position(5), ip.Position(6))
                 
             this.zSecurityPosition(ip.ZVelocity);
