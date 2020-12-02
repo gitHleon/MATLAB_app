@@ -55,7 +55,3 @@ gantry.WaitForMotionAll()
 tic
 gluing.StartDispensing()
 toc
-
-
-
-

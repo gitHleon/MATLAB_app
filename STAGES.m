@@ -1016,6 +1016,7 @@ classdef STAGES < handle
             
             % Check if target position is vector or scalar
             % If target position is scalar it will be X axis
+
             if isscalar(Position)
                 ip.Position(this.vectorX) = Position;
             else 
