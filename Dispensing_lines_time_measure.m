@@ -1,16 +1,26 @@
+
+module = 'R3S0'                   % Module to measure
+
+
+% filename_partial = 'R3S0_times.mat'    % Partial measures
+% filename_final = 'R3S0.mat'          % Final measurements
+
+filename_partial = sprintf('%s_times.mat',module);
+filename_final = sprintf('%s.mat', module);
+
 for i=1:10
 gluing.DispenseContinius('R3S0')
 variable = genvarname(sprintf('timeStop%d',i))
-load('R3S0_times.mat', 'timeStop')
+load(filename_partial, 'timeStop')
 eval([variable ' = timeStop'])
 end
 %Hacemos una matriz con todos los 10 vectores conseguidos
 times = [timeStop1;timeStop2;timeStop3;timeStop4;timeStop5;timeStop6;timeStop7;timeStop8;timeStop9;timeStop10];
-save('R3S0_times.mat', 'times')
+save(filename_partial, 'timeStop')
 
 media = mean(times);
 timeStop = media;
-save('R3S0.mat', 'timeStop')
+save('filename_final', 'timeStop')
 
 %return
 
